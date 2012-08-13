@@ -14,11 +14,17 @@ import com.google.android.maps.Projection;
 
 public class MapItemDetailsController {
 
+    public interface OnHideListener {
+        void onMapItemDetailsHide();
+    }
+
     private MapView mapView;
     private MapItemDetailsView detailsView;
 
     private GeoPoint savedMapCenter;
     private int savedMapZoom;
+
+    private OnHideListener hideListener;
 
     public MapItemDetailsController(MapItemDetailsView detailsView, MapView mapView) {
         this.detailsView = detailsView;
@@ -34,6 +40,10 @@ public class MapItemDetailsController {
         ViewGroup group = (ViewGroup) mapView.getParent();
         group.addView(this.detailsView, group.indexOfChild(mapView) + 1, mapView.getLayoutParams());
         this.detailsView.setVisibility(View.GONE);
+    }
+
+    public void setHideListener(OnHideListener hideListener) {
+        this.hideListener = hideListener;
     }
 
     protected Context getContext() {
@@ -88,6 +98,9 @@ public class MapItemDetailsController {
         this.detailsView.setVisibility(View.GONE);
         detailsView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shrink_to_bottom));
         restoreSavedMapState();
+        if (hideListener != null) {
+            hideListener.onMapItemDetailsHide();
+        }
     }
 
     public boolean isShowing() {
