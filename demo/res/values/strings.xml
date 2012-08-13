@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="map_api_key">0Kl7BWK-Jay4am_8BkJWeZE7aDZQJHse_Jro-Rg</string>
+    <string name="app_name">MapPopupView</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Map Details Example</string>
+    <string name="location_title">Дополнительный офис №4</string>
+    <string name="location_address">ул. Фрунзенская набережная, д. 18/2</string>
+    <string name="location_open_hours">Будние дни: 10:00–18:00\nСб: 11:00–16:00\nВс: выходной</string>
+    <string name="location_phone">8 (495) 270 27 29</string>
+    <string name="location_details">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+</resources>

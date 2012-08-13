@@ -1,0 +1,123 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+    <style name="Animations" />
+    <!-- PopDownMenu -->
+    <style name="Animations.PopDownMenu" />
+
+    <!-- PopDownMenu -->
+    <style name="Animations.PopDownMenu" />
+
+        <style name="product_details_title_text">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ff515151</item>
+    </style>
+
+    <style name="product_details_subtitle_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ff717171</item>
+    </style>
+
+    <!-- Root categories -->
+
+    <style name="SectionTitle" parent="@android:style/TextAppearance.Small">
+        <!-- <item name="android:textStyle">medium</item> -->
+        <item name="android:textColor">@color/textColorSecondaryInverse</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+    <style name="MediumRegularText" parent="@android:style/TextAppearance.Medium">
+        <!-- <item name="android:textStyle">regular</item> -->
+    </style>
+
+    <style name="InputTitleText" parent="@android:style/TextAppearance.Small">
+        <!-- <item name="android:textStyle">condensed</item> -->
+    </style>
+
+    <style name="SmallText" parent="@android:style/TextAppearance.Small">
+        <!-- <item name="android:textStyle">regular</item> -->
+    </style>
+
+    <style name="ListItemText" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="InputValueText" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="HomeLocationsTitleText" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="HomeLocationsDistanceText" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/yellow</item>
+    </style>
+
+    <style name="ProductTitleText" parent="@style/ListItemText"></style>
+
+    <style name="ProductDetailsKeyText" parent="@style/ListItemText">
+        <item name="android:textColor">@color/textColorSecondaryInverse</item>
+    </style>
+
+    <style name="ProductDetailsValueText" parent="@style/ListItemText"></style>
+
+    <style name="ProductSubtitleText" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorSecondaryInverse</item>
+    </style>
+
+    <style name="NewsDateText" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorSecondaryInverse</item>
+    </style>
+
+    <style name="NewsTitleTextRead" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="NewsTitleTextUnread" parent="@style/NewsTitleTextRead">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PaymentItemText" parent="@style/ListItemText">
+    </style>
+
+    <style name="InputTitleTextOnDark" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="InputValueTextOnDark" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="InputTitleSmallText" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+    
+    <style name="InputValueSmallText" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+	<style name="InputValueMediumText" parent="@style/MediumRegularText">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+    
+    
+	<style name="BeneficiaryTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/textColorSecondaryInverse</item>
+		<item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        
+    </style>
+    
+    
+    <style name="DialogHeaderText" parent="@style/SmallText">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+    
+</resources>
