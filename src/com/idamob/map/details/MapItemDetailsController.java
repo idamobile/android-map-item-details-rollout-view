@@ -78,6 +78,7 @@ public class MapItemDetailsController {
 
         GeoPoint tinyMapCenter = prj.fromPixels(newX, newY);
         mapView.getController().animateTo(tinyMapCenter);
+        mapView.getZoomButtonsController().setVisible(false);
         detailsView.setTinyMapCenter(tinyMapCenter);
     }
 
@@ -98,6 +99,7 @@ public class MapItemDetailsController {
         this.detailsView.setVisibility(View.GONE);
         detailsView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shrink_to_bottom));
         restoreSavedMapState();
+        mapView.getZoomButtonsController().setVisible(true);
         if (hideListener != null) {
             hideListener.onMapItemDetailsHide();
         }
