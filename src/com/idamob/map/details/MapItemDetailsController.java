@@ -23,8 +23,12 @@ public class MapItemDetailsController {
 
     private GeoPoint savedMapCenter;
     private int savedMapZoom;
+    private boolean restoreLastMapPosition;
 
     private OnHideListener hideListener;
+
+    private boolean zoomControllersEnabled;
+    private GeoPoint itemPosition;
 
     public MapItemDetailsController(MapItemDetailsView detailsView, MapView mapView) {
         this.detailsView = detailsView;
@@ -46,11 +50,24 @@ public class MapItemDetailsController {
         this.hideListener = hideListener;
     }
 
+    public void setRestoreLastMapPosition(boolean enabled) {
+        this.restoreLastMapPosition = enabled;
+    }
+
+    public boolean isRestoreLastMapPosition() {
+        return restoreLastMapPosition;
+    }
+
     protected Context getContext() {
         return mapView.getContext();
     }
 
+    public MapView getMapView() {
+        return mapView;
+    }
+
     public void show(GeoPoint forLocation) {
+        this.itemPosition = forLocation;
         saveCurrentMapState();
 
         detailsView.setVisibility(View.VISIBLE);
@@ -76,9 +93,20 @@ public class MapItemDetailsController {
         int newX = mapCenterPxCoord.x - dx;
         int newY = mapCenterPxCoord.y - dy;
 
-        GeoPoint tinyMapCenter = prj.fromPixels(newX, newY);
-        mapView.getController().animateTo(tinyMapCenter);
-        mapView.getZoomButtonsController().setVisible(false);
+        final GeoPoint tinyMapCenter = prj.fromPixels(newX, newY);
+        mapView.getController().stopAnimation(false);
+        mapView.getController().stopPanning();
+        mapView.getController().setCenter(mapView.getMapCenter());
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                mapView.getController().animateTo(tinyMapCenter);
+            }
+        });
+        zoomControllersEnabled = mapView.getZoomButtonsController().isVisible();
+        if (zoomControllersEnabled) {
+            mapView.getZoomButtonsController().setVisible(false);
+        }
         detailsView.setTinyMapCenter(tinyMapCenter);
     }
 
@@ -98,10 +126,24 @@ public class MapItemDetailsController {
     public void hide() {
         this.detailsView.setVisibility(View.GONE);
         detailsView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shrink_to_bottom));
-        restoreSavedMapState();
-        mapView.getZoomButtonsController().setVisible(true);
+        if (restoreLastMapPosition) {
+            restoreSavedMapState();
+        } else {
+            moveToItemPosition();
+        }
+        if (zoomControllersEnabled) {
+            mapView.getZoomButtonsController().setVisible(true);
+        }
         if (hideListener != null) {
             hideListener.onMapItemDetailsHide();
+        }
+    }
+
+    private void moveToItemPosition() {
+        if (itemPosition != null) {
+            mapView.getController().animateTo(itemPosition);
+            mapView.getController().setZoom(savedMapZoom);
+            itemPosition = null;
         }
     }
 
