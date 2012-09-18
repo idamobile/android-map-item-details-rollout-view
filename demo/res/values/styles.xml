@@ -9,7 +9,7 @@
     <!-- PopDownMenu -->
     <style name="Animations.PopDownMenu" />
 
-        <style name="product_details_title_text">
+    <style name="product_details_title_text">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#ff515151</item>
     </style>
@@ -22,6 +22,7 @@
     <!-- Root categories -->
 
     <style name="SectionTitle" parent="@android:style/TextAppearance.Small">
+
         <!-- <item name="android:textStyle">medium</item> -->
         <item name="android:textColor">@color/textColorSecondaryInverse</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -82,8 +83,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="PaymentItemText" parent="@style/ListItemText">
-    </style>
+    <style name="PaymentItemText" parent="@style/ListItemText"></style>
 
     <style name="InputTitleTextOnDark" parent="@style/MediumRegularText">
         <item name="android:textColor">@color/textColorSecondary</item>
@@ -96,28 +96,25 @@
     <style name="InputTitleSmallText" parent="@style/SmallText">
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
-    
+
     <style name="InputValueSmallText" parent="@style/SmallText">
         <item name="android:textColor">@color/textColorPrimaryInverse</item>
     </style>
 
-	<style name="InputValueMediumText" parent="@style/MediumRegularText">
+    <style name="InputValueMediumText" parent="@style/MediumRegularText">
         <item name="android:textColor">@color/textColorPrimaryInverse</item>
     </style>
-    
-    
-	<style name="BeneficiaryTitle" parent="@android:style/TextAppearance.Medium">
+
+    <style name="BeneficiaryTitle" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/textColorSecondaryInverse</item>
-		<item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
-        
     </style>
-    
-    
+
     <style name="DialogHeaderText" parent="@style/SmallText">
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
-    
+
 </resources>

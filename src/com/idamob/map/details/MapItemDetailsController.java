@@ -10,7 +10,10 @@ import android.view.animation.AnimationUtils;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Projection;
+import com.idamobile.map.IGeoPoint;
+import com.idamobile.map.MapViewBase;
+import com.idamobile.map.UniversalGeoPoint;
+import com.idamobile.map.google.MapViewWrapper;
 
 public class MapItemDetailsController {
 
@@ -18,19 +21,23 @@ public class MapItemDetailsController {
         void onMapItemDetailsHide();
     }
 
-    private MapView mapView;
+    private MapViewBase mapView;
     private MapItemDetailsView detailsView;
 
-    private GeoPoint savedMapCenter;
+    private IGeoPoint savedMapCenter;
     private int savedMapZoom;
     private boolean restoreLastMapPosition;
 
     private OnHideListener hideListener;
 
     private boolean zoomControllersEnabled;
-    private GeoPoint itemPosition;
+    private IGeoPoint itemPosition;
 
     public MapItemDetailsController(MapItemDetailsView detailsView, MapView mapView) {
+        this(detailsView, new MapViewWrapper(mapView));
+    }
+
+    public MapItemDetailsController(MapItemDetailsView detailsView, MapViewBase mapView) {
         this.detailsView = detailsView;
         this.mapView = mapView;
 
@@ -41,8 +48,8 @@ public class MapItemDetailsController {
             }
         });
 
-        ViewGroup group = (ViewGroup) mapView.getParent();
-        group.addView(this.detailsView, group.indexOfChild(mapView) + 1, mapView.getLayoutParams());
+        ViewGroup group = (ViewGroup) mapView.getView().getParent();
+        group.addView(this.detailsView, group.indexOfChild(mapView.getView()) + 1, mapView.getView().getLayoutParams());
         this.detailsView.setVisibility(View.GONE);
     }
 
@@ -63,62 +70,65 @@ public class MapItemDetailsController {
     }
 
     public MapView getMapView() {
+        return (MapView) mapView.getView();
+    }
+
+    public MapViewBase getMapViewBase() {
         return mapView;
     }
 
     public void show(GeoPoint forLocation) {
+        show(new UniversalGeoPoint(forLocation));
+    }
+
+    public void show(IGeoPoint forLocation) {
         this.itemPosition = forLocation;
         saveCurrentMapState();
 
         detailsView.setVisibility(View.VISIBLE);
         detailsView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.grow_from_bottom));
-        int widthPx = mapView.getWidth();
+        int widthPx = mapView.getView().getWidth();
 
         detailsView.measure(MeasureSpec.makeMeasureSpec(widthPx, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        int heightPx = detailsView.correctTinyMapHeight(mapView.getHeight());
+        int heightPx = detailsView.correctTinyMapHeight(mapView.getView().getHeight());
 
-        Projection prj = mapView.getProjection();
         int tinyMapCenterPxCoordX = widthPx / 2;
         int tinyMapCenterPxCoordY = heightPx / 2;
-        Point itemPxCoord = new Point();
-        prj.toPixels(forLocation, itemPxCoord);
+        Point itemPxCoord = mapView.convertGeoPoint(forLocation);
 
         int dx = tinyMapCenterPxCoordX - itemPxCoord.x;
         int dy = tinyMapCenterPxCoordY - itemPxCoord.y;
 
-        Point mapCenterPxCoord = new Point();
-        prj.toPixels(mapView.getMapCenter(), mapCenterPxCoord);
+        Point mapCenterPxCoord = mapView.convertGeoPoint(mapView.getController().getMapCenter());
 
         int newX = mapCenterPxCoord.x - dx;
         int newY = mapCenterPxCoord.y - dy;
 
-        final GeoPoint tinyMapCenter = prj.fromPixels(newX, newY);
-        mapView.getController().stopAnimation(false);
-        mapView.getController().stopPanning();
-        mapView.getController().setCenter(mapView.getMapCenter());
-        mapView.post(new Runnable() {
+        final IGeoPoint tinyMapCenter = mapView.convertScreenPoint(new Point(newX, newY));
+        mapView.getController().setMapCenter(mapView.getController().getMapCenter());
+        mapView.getView().post(new Runnable() {
             @Override
             public void run() {
                 mapView.getController().animateTo(tinyMapCenter);
             }
         });
-        zoomControllersEnabled = mapView.getZoomButtonsController().isVisible();
+        zoomControllersEnabled = mapView.hasZoomController() && mapView.isZoomControllerVisible();
         if (zoomControllersEnabled) {
-            mapView.getZoomButtonsController().setVisible(false);
+            mapView.setZoomControllerVisible(false);
         }
         detailsView.setTinyMapCenter(tinyMapCenter);
     }
 
     private void saveCurrentMapState() {
-        savedMapCenter = mapView.getMapCenter();
-        savedMapZoom = mapView.getZoomLevel();
+        savedMapCenter = mapView.getController().getMapCenter();
+        savedMapZoom = mapView.getController().getZoomLevel();
     }
 
     private void restoreSavedMapState() {
         if (savedMapCenter != null) {
             mapView.getController().animateTo(savedMapCenter);
-            mapView.getController().setZoom(savedMapZoom);
+            mapView.getController().setZoomLevel(savedMapZoom);
             savedMapCenter = null;
         }
     }
@@ -132,7 +142,7 @@ public class MapItemDetailsController {
             moveToItemPosition();
         }
         if (zoomControllersEnabled) {
-            mapView.getZoomButtonsController().setVisible(true);
+            mapView.setZoomControllerVisible(true);
         }
         if (hideListener != null) {
             hideListener.onMapItemDetailsHide();
@@ -142,7 +152,7 @@ public class MapItemDetailsController {
     private void moveToItemPosition() {
         if (itemPosition != null) {
             mapView.getController().animateTo(itemPosition);
-            mapView.getController().setZoom(savedMapZoom);
+            mapView.getController().setZoomLevel(savedMapZoom);
             itemPosition = null;
         }
     }

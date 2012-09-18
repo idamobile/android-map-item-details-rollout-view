@@ -6,21 +6,26 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Projection;
 import com.idamob.map.details.ObservableScrollView.ScrollViewListener;
+import com.idamobile.map.IGeoPoint;
+import com.idamobile.map.MapViewBase;
+import com.idamobile.map.google.MapViewWrapper;
 
 public class MapItemDetailsView extends LinearLayout {
 
-    private MapView mapView;
-    private GeoPoint tinyMapCenter;
+    private MapViewBase mapView;
+    private IGeoPoint tinyMapCenter;
 
     private View tinyMapWindow;
     private View content;
     private int tinyMapWindowMinHeight;
 
     public MapItemDetailsView(MapView mapView, int contentViewlayoutRes) {
+        this(new MapViewWrapper(mapView), contentViewlayoutRes);
+    }
+
+    public MapItemDetailsView(MapViewBase mapView, int contentViewlayoutRes) {
         super(mapView.getContext());
         this.mapView = mapView;
 
@@ -42,11 +47,10 @@ public class MapItemDetailsView extends LinearLayout {
         return new ScrollViewListener() {
             @Override
             public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
-                Projection prj = mapView.getProjection();
-                Point tinyMapCenterPxCoord = new Point();
-                prj.toPixels(tinyMapCenter, tinyMapCenterPxCoord);
-                GeoPoint newCenter = prj.fromPixels(tinyMapCenterPxCoord.x, tinyMapCenterPxCoord.y + y / 2);
-                mapView.getController().setCenter(newCenter);
+                Point tinyMapCenterPxCoord = mapView.convertGeoPoint(tinyMapCenter);
+                IGeoPoint newCenter = mapView.convertScreenPoint(
+                        new Point(tinyMapCenterPxCoord.x, tinyMapCenterPxCoord.y + y / 2));
+                mapView.getController().setMapCenter(newCenter);
             }
         };
     }
@@ -55,7 +59,7 @@ public class MapItemDetailsView extends LinearLayout {
         return content;
     }
 
-    public void setTinyMapCenter(GeoPoint tinyMapCenter) {
+    public void setTinyMapCenter(IGeoPoint tinyMapCenter) {
         this.tinyMapCenter = tinyMapCenter;
     }
 
