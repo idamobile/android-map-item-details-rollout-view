@@ -1,57 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>MapItem Details Popup</name>
-    <artifactId>mapitem-details-popup</artifactId>
+    <name>Map Item Details Rollout View (Parent)</name>
+
+    <groupId>com.idamobile.android.map</groupId>
+    <artifactId>map-item-details-rollout-view-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <groupId>com.idamob.map.details</groupId>
-    <packaging>apklib</packaging>
+    
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>library</module>
+        <module>sample</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <android.version>4.0.1.2</android.version>
-        <android.version.platform>14</android.version.platform>
+        <android.version>4.1.1.4</android.version>
+        <android.platform>16</android.platform>
 
-        <maps.version>14_r2</maps.version>
+        <maps.version>16_r2</maps.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <artifactId>android</artifactId>
-            <version>${android.version}</version>
-            <groupId>com.google.android</groupId>
-            <scope>provided</scope>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.android</groupId>
+                <artifactId>android</artifactId>
+                <version>${android.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.android.maps</groupId>
+                <artifactId>maps</artifactId>
+                <version>${maps.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-        <dependency>
-            <groupId>com.google.android.maps</groupId>
-            <artifactId>maps</artifactId>
-            <version>${maps.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+            <dependency>
+                <groupId>com.idamobile.android.map</groupId>
+                <artifactId>unified-mapkit-interface-library</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.idamobile.android.map</groupId>
+                <artifactId>unified-mapkit-interface-google-addon</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>ida-repo-releases</id>
+            <name>iDa Mobile Repo - Releases</name>
+            <url>http://project.idamob.ru:8000/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ida-repo-snapshots</id>
+            <name>iDa Mobile Repo - Snapshots</name>
+            <url>http://project.idamob.ru:8000/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
-        <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <sourceDirectory>src</sourceDirectory>
 
         <plugins>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.2</version>
                 <extensions>true</extensions>
                 <configuration>
                     <sdk>
-                        <platform>${android.version.platform}</platform>
+                        <platform>${android.platform}</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                    <lazyLibraryUnpack>true</lazyLibraryUnpack>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

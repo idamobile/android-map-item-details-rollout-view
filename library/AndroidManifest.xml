@@ -1,13 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.idamob.map.details"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.idamob.map.details">
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
 
-    <application android:icon="@drawable/ic_launcher">
-
+    <application>
 		<uses-library android:name="com.google.android.maps" />
     </application>
-
 </manifest>

@@ -1,8 +1,8 @@
-Map Item Pull Out Details
+Map Item Details Rollout View for Android
 =========================
 
-Android map view pin/item details with pull out effect
+Rollout View for MapView pin/item details
 
 Dependencies
 ----
-* [Android Single Map Interface] (https://github.com/shaubert/android-single-map-interface)
+* [Android Unified MapKit Interface] (https://github.com/idamobile/android-unified-mapkit-interface)
