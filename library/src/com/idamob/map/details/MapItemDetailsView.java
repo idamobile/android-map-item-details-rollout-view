@@ -6,26 +6,20 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.idamob.map.details.ObservableScrollView.ScrollViewListener;
-import com.idamobile.map.IGeoPoint;
-import com.idamobile.map.MapViewBase;
-import com.idamobile.map.google.MapViewWrapper;
 
 public class MapItemDetailsView extends LinearLayout {
 
-    private MapViewBase mapView;
-    private IGeoPoint tinyMapCenter;
+    private MapView mapView;
+    private GeoPoint tinyMapCenter;
 
     private View tinyMapWindow;
     private View content;
     private int tinyMapWindowMinHeight;
 
     public MapItemDetailsView(MapView mapView, int contentViewlayoutRes) {
-        this(new MapViewWrapper(mapView), contentViewlayoutRes);
-    }
-
-    public MapItemDetailsView(MapViewBase mapView, int contentViewlayoutRes) {
         super(mapView.getContext());
         this.mapView = mapView;
 
@@ -47,19 +41,29 @@ public class MapItemDetailsView extends LinearLayout {
         return new ScrollViewListener() {
             @Override
             public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
-                Point tinyMapCenterPxCoord = mapView.convertGeoPoint(tinyMapCenter);
-                IGeoPoint newCenter = mapView.convertScreenPoint(
+                Point tinyMapCenterPxCoord = convertGeoPoint(tinyMapCenter);
+                GeoPoint newCenter = convertScreenPoint(
                         new Point(tinyMapCenterPxCoord.x, tinyMapCenterPxCoord.y + y / 2));
-                mapView.getController().setMapCenter(newCenter);
+                mapView.getController().setCenter(newCenter);
             }
         };
+    }
+
+    public Point convertGeoPoint(GeoPoint geoPoint) {
+        Point result = new Point();
+        mapView.getProjection().toPixels(geoPoint, result);
+        return result;
+    }
+
+    public GeoPoint convertScreenPoint(Point point) {
+        return mapView.getProjection().fromPixels(point.x, point.y);
     }
 
     public View getContent() {
         return content;
     }
 
-    public void setTinyMapCenter(IGeoPoint tinyMapCenter) {
+    public void setTinyMapCenter(GeoPoint tinyMapCenter) {
         this.tinyMapCenter = tinyMapCenter;
     }
 
