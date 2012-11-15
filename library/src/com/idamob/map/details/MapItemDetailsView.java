@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
 
-import com.google.android.maps.MapView;
 import com.idamob.map.details.ObservableScrollView.ScrollViewListener;
 import com.idamobile.map.IGeoPoint;
 import com.idamobile.map.MapViewBase;
-import com.idamobile.map.google.MapViewWrapper;
 
 public class MapItemDetailsView extends LinearLayout {
 
@@ -20,10 +18,6 @@ public class MapItemDetailsView extends LinearLayout {
     private View tinyMapWindow;
     private View content;
     private int tinyMapWindowMinHeight;
-
-    public MapItemDetailsView(MapView mapView, int contentViewlayoutRes) {
-        this(new MapViewWrapper(mapView), contentViewlayoutRes);
-    }
 
     public MapItemDetailsView(MapViewBase mapView, int contentViewlayoutRes) {
         super(mapView.getContext());

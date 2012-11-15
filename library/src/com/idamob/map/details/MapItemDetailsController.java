@@ -8,12 +8,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
 import com.idamobile.map.IGeoPoint;
 import com.idamobile.map.MapViewBase;
-import com.idamobile.map.UniversalGeoPoint;
-import com.idamobile.map.google.MapViewWrapper;
 
 public class MapItemDetailsController {
 
@@ -32,10 +28,6 @@ public class MapItemDetailsController {
 
     private boolean zoomControllersEnabled;
     private IGeoPoint itemPosition;
-
-    public MapItemDetailsController(MapItemDetailsView detailsView, MapView mapView) {
-        this(detailsView, new MapViewWrapper(mapView));
-    }
 
     public MapItemDetailsController(MapItemDetailsView detailsView, MapViewBase mapView) {
         this.detailsView = detailsView;
@@ -69,16 +61,8 @@ public class MapItemDetailsController {
         return mapView.getContext();
     }
 
-    public MapView getMapView() {
-        return (MapView) mapView.getView();
-    }
-
     public MapViewBase getMapViewBase() {
         return mapView;
-    }
-
-    public void show(GeoPoint forLocation) {
-        show(new UniversalGeoPoint(forLocation));
     }
 
     public void show(IGeoPoint forLocation) {
