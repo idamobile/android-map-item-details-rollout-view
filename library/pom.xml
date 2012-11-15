@@ -31,10 +31,6 @@
             <groupId>com.idamobile.android.map</groupId>
             <artifactId>unified-mapkit-interface-library</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.idamobile.android.map</groupId>
-            <artifactId>unified-mapkit-interface-google-addon</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
