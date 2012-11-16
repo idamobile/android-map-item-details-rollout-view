@@ -28,6 +28,8 @@
         <android.version>4.1.1.4</android.version>
         <android.platform>16</android.platform>
 
+        <maps.version>16_r2</maps.version>
+
         <unified-mapkit-iface.version>1.0.0-SNAPSHOT</unified-mapkit-iface.version>
     </properties>
 
