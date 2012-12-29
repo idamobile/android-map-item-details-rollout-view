@@ -7,7 +7,7 @@
 
     <groupId>com.idamobile.android.map</groupId>
     <artifactId>map-item-details-rollout-view-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     
     <packaging>pom</packaging>
 
@@ -16,6 +16,12 @@
         <module>sample</module>
     </modules>
 
+    <scm>
+        <url>https://github.com/idamobile/android-map-item-details-rollout-view</url>
+        <connection>scm:git:git://github.com/idamobile/android-map-item-details-rollout-view.git</connection>
+        <developerConnection>scm:git:git@github.com:idamobile/android-map-item-details-rollout-view.git</developerConnection>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -23,6 +29,8 @@
         <android.platform>16</android.platform>
 
         <maps.version>16_r2</maps.version>
+
+        <unified-mapkit-iface.version>1.0.0-SNAPSHOT</unified-mapkit-iface.version>
     </properties>
 
     <dependencyManagement>
@@ -33,17 +41,11 @@
                 <version>${android.version}</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>com.google.android.maps</groupId>
-                <artifactId>maps</artifactId>
-                <version>${maps.version}</version>
-                <scope>provided</scope>
-            </dependency>
 
             <dependency>
                 <groupId>com.idamobile.android.map</groupId>
                 <artifactId>unified-mapkit-interface-library</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${unified-mapkit-iface.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -51,7 +53,7 @@
     <repositories>
         <repository>
             <id>ida-repo-public</id>
-            <url>http://project.idamob.ru:8000/nexus/content/groups/public/</url>
+            <url>http://nexus.idamob.ru/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -59,12 +61,12 @@
         <repository>
             <id>ida-repo-releases</id>
             <name>iDa Mobile Repo - Releases</name>
-            <url>http://project.idamob.ru:8000/nexus/content/repositories/releases</url>
+            <url>http://nexus.idamob.ru/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>ida-repo-snapshots</id>
             <name>iDa Mobile Repo - Snapshots</name>
-            <url>http://project.idamob.ru:8000/nexus/content/repositories/snapshots</url>
+            <url>http://nexus.idamob.ru/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -82,6 +84,14 @@
                         <platform>${android.platform}</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.2</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
         </plugins>
