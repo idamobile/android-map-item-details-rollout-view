@@ -13,6 +13,8 @@ import com.idamobile.map.MapViewBase;
 
 public class MapItemDetailsController {
 
+    private static final int DEFAULT_ZOOM_LEVEL = 13;
+
     public interface OnHideListener {
         void onMapItemDetailsHide();
     }
@@ -28,6 +30,8 @@ public class MapItemDetailsController {
 
     private boolean zoomControllersEnabled;
     private IGeoPoint itemPosition;
+
+    private int zoomLevelForPoint = DEFAULT_ZOOM_LEVEL;
 
     public MapItemDetailsController(MapItemDetailsView detailsView, MapViewBase mapView) {
         this.detailsView = detailsView;
@@ -57,6 +61,14 @@ public class MapItemDetailsController {
         return restoreLastMapPosition;
     }
 
+    public int getZoomLevelForPoint() {
+        return zoomLevelForPoint;
+    }
+
+    public void setZoomLevelForPoint(int zoomLevel) {
+        this.zoomLevelForPoint = zoomLevelForPoint;
+    }
+
     protected Context getContext() {
         return mapView.getContext();
     }
@@ -66,6 +78,10 @@ public class MapItemDetailsController {
     }
 
     public void show(IGeoPoint forLocation) {
+        show(forLocation, false);
+    }
+
+    public void show(IGeoPoint forLocation, boolean zoomToPoint) {
         this.itemPosition = forLocation;
         saveCurrentMapState();
 
@@ -90,13 +106,28 @@ public class MapItemDetailsController {
         int newY = mapCenterPxCoord.y - dy;
 
         final IGeoPoint tinyMapCenter = mapView.convertScreenPoint(new Point(newX, newY));
-        mapView.getController().setMapCenter(mapView.getController().getMapCenter());
-        mapView.getView().post(new Runnable() {
-            @Override
-            public void run() {
-                mapView.getController().animateTo(tinyMapCenter);
-            }
-        });
+
+        if (zoomToPoint) {
+            mapView.getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    int targetZoomLevel = (int) (mapView.getController().getMaxZoomLevel() * 0.9);
+                    if (targetZoomLevel > mapView.getController().getZoomLevel()) {
+                        mapView.getController().animateTo(itemPosition, targetZoomLevel);
+                    } else {
+                        mapView.getController().animateTo(tinyMapCenter);
+                    }
+                }
+            });
+        } else {
+            mapView.getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    mapView.getController().setMapCenter(mapView.getController().getMapCenter());
+                    mapView.getController().animateTo(tinyMapCenter);
+                }
+            });
+        }
         zoomControllersEnabled = mapView.hasZoomController() && mapView.isZoomControllerVisible();
         if (zoomControllersEnabled) {
             mapView.setZoomControllerVisible(false);
@@ -111,8 +142,7 @@ public class MapItemDetailsController {
 
     private void restoreSavedMapState() {
         if (savedMapCenter != null) {
-            mapView.getController().animateTo(savedMapCenter);
-            mapView.getController().setZoomLevel(savedMapZoom);
+            mapView.getController().animateTo(savedMapCenter, savedMapZoom);
             savedMapCenter = null;
         }
     }
@@ -135,8 +165,7 @@ public class MapItemDetailsController {
 
     private void moveToItemPosition() {
         if (itemPosition != null) {
-            mapView.getController().animateTo(itemPosition);
-            mapView.getController().setZoomLevel(savedMapZoom);
+            mapView.getController().animateTo(itemPosition, savedMapZoom);
             itemPosition = null;
         }
     }
