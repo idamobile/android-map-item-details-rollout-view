@@ -23,7 +23,7 @@ public class MapItemDetailsController {
     private MapItemDetailsView detailsView;
 
     private IGeoPoint savedMapCenter;
-    private int savedMapZoom;
+    private float savedMapZoom;
     private boolean restoreLastMapPosition;
 
     private OnHideListener hideListener;

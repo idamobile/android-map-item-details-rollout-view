@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import com.idamobile.map.BalloonOverlayExtension.BalloonAdapter;
 import com.idamobile.map.OverlayItemBase;
 
-public class DefaultBalloonAdapter implements BalloonAdapter, OnClickListener {
+public class DefaultBalloonAdapter implements BalloonAdapter {
 
     public static interface OnBalloonClickListener {
         void onBalloonTap(OverlayItemBase item);
@@ -31,15 +31,12 @@ public class DefaultBalloonAdapter implements BalloonAdapter, OnClickListener {
     @Override
     public void bindView(Context context, View convertView, OverlayItemBase item) {
         ((BalloonOverlayView) convertView).setData(item);
-        convertView.setTag(item);
-        convertView.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onBalloonClick(OverlayItemBase overlayItemBase) {
         if (balloonClickListener != null) {
-            balloonClickListener.onBalloonTap((OverlayItemBase) v.getTag());
+            balloonClickListener.onBalloonTap(overlayItemBase);
         }
     }
-
 }
