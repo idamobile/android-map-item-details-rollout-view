@@ -1,13 +1,11 @@
 package com.idamob.map.details;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-
 import com.idamobile.map.IGeoPoint;
 import com.idamobile.map.MapViewBase;
 
@@ -87,25 +85,16 @@ public class MapItemDetailsController {
 
         detailsView.setVisibility(View.VISIBLE);
         detailsView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.grow_from_bottom));
-        int widthPx = mapView.getView().getWidth();
+        detailsView.setItemPosition(forLocation);
 
+        int widthPx = mapView.getView().getWidth();
+        detailsView.resetTinyMapCenter();
         detailsView.measure(MeasureSpec.makeMeasureSpec(widthPx, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        int heightPx = detailsView.correctTinyMapHeight(mapView.getView().getHeight());
+        detailsView.correctTinyMapHeight(mapView.getView().getHeight());
+        detailsView.updateTinyMapCenter();
 
-        int tinyMapCenterPxCoordX = widthPx / 2;
-        int tinyMapCenterPxCoordY = heightPx / 2;
-        Point itemPxCoord = mapView.convertGeoPoint(forLocation);
-
-        int dx = tinyMapCenterPxCoordX - itemPxCoord.x;
-        int dy = tinyMapCenterPxCoordY - itemPxCoord.y;
-
-        Point mapCenterPxCoord = mapView.convertGeoPoint(mapView.getController().getMapCenter());
-
-        int newX = mapCenterPxCoord.x - dx;
-        int newY = mapCenterPxCoord.y - dy;
-
-        final IGeoPoint tinyMapCenter = mapView.convertScreenPoint(new Point(newX, newY));
+        final IGeoPoint tinyMapCenter = detailsView.getTinyMapCenter();
 
         if (zoomToPoint) {
             mapView.getView().post(new Runnable() {
@@ -132,7 +121,6 @@ public class MapItemDetailsController {
         if (zoomControllersEnabled) {
             mapView.setZoomControllerVisible(false);
         }
-        detailsView.setTinyMapCenter(tinyMapCenter);
     }
 
     private void saveCurrentMapState() {
